@@ -1,6 +1,7 @@
 import * as core from '@actions/core'
 import * as event from './event'
 import * as version from './version'
+// eslint-disable-next-line sort-imports
 import * as git from './git'
 import * as github from './github'
 
@@ -9,7 +10,7 @@ export async function run(): Promise<void> {
     const token = core.getInput('repo-token')
 
     const tag = event.getCreatedTag()
-    var releaseUrl = ''
+    let releaseUrl = ''
 
     if (tag && version.isSemVer(tag)) {
       const changelog = await git.getChangesIntroducedByTag(tag)
@@ -17,7 +18,6 @@ export async function run(): Promise<void> {
     }
 
     core.setOutput('release-url', releaseUrl)
-
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }

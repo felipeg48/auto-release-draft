@@ -1,28 +1,27 @@
+/* eslint-disable sort-imports */
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 import * as version from './version'
 import * as markdown from './markdown'
-import { getOctokitOptions, GitHub } from '@actions/github/lib/utils'
 
 export async function createReleaseDraft(
   versionTag: string,
   repoToken: string,
   changeLog: string
 ): Promise<string> {
-
-  const octokit = github.getOctokit(repoToken)   //.GitHub(repoToken)
+  const octokit = github.getOctokit(repoToken) //.GitHub(repoToken)
 
   const response = await octokit.rest.repos.createRelease({
     owner: github.context.repo.owner,
     repo: github.context.repo.repo,
-    tag_name: versionTag, // eslint-disable-line @typescript-eslint/camelcase
+    tag_name: versionTag,
     name: version.removePrefix(versionTag),
     body: markdown.toUnorderedList(changeLog),
     prerelease: version.isPrerelease(versionTag),
     draft: true
   })
 
-  if (response.status != 201) {
+  if (response.status !== 201) {
     throw new Error(`Failed to create the release: ${response.status}`)
   }
 
