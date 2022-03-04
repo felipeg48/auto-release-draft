@@ -17,7 +17,7 @@ export async function run(): Promise<void> {
       releaseUrl = await github.createReleaseDraft(tag, token, changelog)
     }
 
-    // Just a comment
+    // Forgot
 
     core.setOutput('release-url', releaseUrl)
   } catch (error) {
