@@ -15,3 +15,11 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run all
+      - name: Create a release draft for a version tag
+        id: create-release-draft
+        uses: ./
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN  }}
+      - name: Print the URL of the release draft
+        if: steps.create-release-draft.outputs.release-url != ''
+        run: echo ${{ steps.create-release-draft.outputs.release-url }}
